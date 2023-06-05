@@ -1,0 +1,1 @@
+web: gunicorn instagramReelsDownloader.wsgi --log-file -
