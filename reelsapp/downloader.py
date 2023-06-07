@@ -6,18 +6,23 @@ from selenium.webdriver.chrome.options import Options
 import time
 import json
 import re
-
+from urllib.parse import urlparse, urlunparse
 
 def ReturnVideoLink(passed):
     shortcode = ''
-    if "reels" in passed:
-        shortcode = re.findall(r"/reels/([A-Za-z0-9_-]+)", passed)[0]
+    if "reel" in passed or "reels" in passed:
+        shortcode = re.findall(r"/(reel[s]?)/([A-Za-z0-9_-]+)", passed)[0][1]
     elif "p" in passed:
         shortcode = re.findall(r"/p/([A-Za-z0-9_-]+)", passed)[0]
     else:
         return None  # Invalid link format
-
+    
     video = f"https://www.instagram.com/p/{shortcode}"
+    
+    # Remove query parameters from URL
+    parsed_url = urlparse(video)
+    clean_url = urlunparse(parsed_url._replace(query=''))
+    
     chrome_options = Options()
     chrome_options.add_argument("--mute-audio")
     chrome_options.add_argument("headless")
@@ -25,7 +30,7 @@ def ReturnVideoLink(passed):
     svc = Service(ChromeDriverManager().install())
     driver = webdriver.Chrome(service=svc, chrome_options=chrome_options)
     driver.delete_all_cookies()
-    driver.get(video)
+    driver.get(clean_url)
     delay = 15
     soup = ''
     while delay >= 0:
