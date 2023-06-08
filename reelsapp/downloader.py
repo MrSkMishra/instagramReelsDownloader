@@ -15,11 +15,10 @@ def ReturnVideoLink(passed):
     elif "p" in passed:
         shortcode = re.findall(r"/p/([A-Za-z0-9_-]+)", passed)[0]
     else:
-        return None  # Invalid link format
+        return None  
     
     video = f"https://www.instagram.com/p/{shortcode}"
     
-    # Remove query parameters from URL
     parsed_url = urlparse(video)
     clean_url = urlunparse(parsed_url._replace(query=''))
     
