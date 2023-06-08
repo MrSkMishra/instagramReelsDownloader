@@ -40,7 +40,7 @@ def ReturnVideoLink(passed):
             print(e)
             time.sleep(1)
             delay -= 1
-            print("Sonu")
+            print("Pivarsha")
     soup = BeautifulSoup(soup, 'html.parser')
     soup = soup.findAll('video')
     video_link = soup[0]['src'].replace("&_nc_cat", "&amp:_nc_cat")
